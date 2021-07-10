@@ -158,8 +158,8 @@ def process_key(output, key):
         raise ValueError('RSA key does not contain modulus and exponent')
 
     if modulus_length < 2 or \
-       ord(der[modulus_offset]) != 0 or \
-       ord(der[modulus_offset + 1]) < 128:
+       der[modulus_offset] != 0 or \
+       der[modulus_offset + 1] < 128:
         raise ValueError('RSA modulus does not have %s valid bits' %
                          (modulus_length - 1) * 8)
 
@@ -172,7 +172,7 @@ def process_key(output, key):
     cert_rows = []
     for x in range(0, len(der), 16):
         cert_rows.append('      \"%s\"' %
-                         ''.join(["\\x%02x" % ord(x)
+                         ''.join(["\\x%02x" % x
                                   for x in der[x:x+16]]))
     args['certData'] = '\n'.join(cert_rows)
 
